@@ -34,6 +34,30 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".StatisticMain"
+            android:label="@string/statistic" >
+            <intent-filter>
+                <action android:name="android.intent.action.STATISTIC_MAIN" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".StatisticIncomes"
+            android:label="@string/statistic" >
+            <intent-filter>
+                <action android:name="android.intent.action.STATISTIC_INCOMES" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".StatisticExpenses"
+            android:label="@string/statistic" >
+            <intent-filter>
+                <action android:name="android.intent.action.STATISTIC_EXPENSES" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

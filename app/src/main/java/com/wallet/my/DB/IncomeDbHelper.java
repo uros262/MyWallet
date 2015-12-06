@@ -55,7 +55,7 @@ public class IncomeDbHelper extends MyWalletDbHelper{
         }
     }
 
-    public String getAllIncomes() {
+    public String getIncomesStatistic() {
 
         String result = "";
         String query = "SELECT * FROM " + IncomeDB.TABLE_NAME;

@@ -29,6 +29,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     TextView balance;
     Button incomeBtn;
     Button expenseBtn;
+    Button statisticBtn;
     BalanceDbHelper balanceDbHelper;
 
     private void Init() {
@@ -52,6 +53,9 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
 
         expenseBtn = (Button) findViewById(R.id.btnExpense);
         expenseBtn.setOnClickListener(this);
+
+        statisticBtn = (Button) findViewById(R.id.btnStatistic);
+        statisticBtn.setOnClickListener(this);
     }
 
     @Override
@@ -99,6 +103,10 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
                 break;
             case R.id.btnExpense:
                 intent = new Intent(Home.this, AddExpense.class);
+                startActivity(intent);
+                break;
+            case R.id.btnStatistic:
+                intent = new Intent(Home.this, StatisticMain.class);
                 startActivity(intent);
                 break;
         }

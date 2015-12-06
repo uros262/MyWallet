@@ -27,4 +27,6 @@
     <string name="validation_selected">must be selected</string>
     <string name="type_of_income">Type of income</string>
     <string name="change">change</string>
+    <string name="incomes">Incomes</string>
+    <string name="expenses">Expenses</string>
 </resources>

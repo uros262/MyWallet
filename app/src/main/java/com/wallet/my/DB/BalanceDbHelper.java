@@ -93,4 +93,30 @@ public class BalanceDbHelper extends MyWalletDbHelper{
 
         return newRowId;
     }
+
+    public String getBalanceStatistic() {
+
+        String result = "";
+        String query = "SELECT * FROM " + BalanceDB.TABLE_NAME;
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        while(!cursor.isAfterLast())
+        {
+            if(cursor.getString(cursor.getColumnIndex(BalanceDB.COLUMN_NAME_ID)) != null) {
+                result += cursor.getString(cursor.getColumnIndex(BalanceDB.COLUMN_NAME_AMOUNT));
+                result += " | ";
+                result += cursor.getString(cursor.getColumnIndex(BalanceDB.COLUMN_NAME_UPDATE_TIME));
+                result += "\n";
+            }
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+
+        return result;
+    }
 }

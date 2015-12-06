@@ -3,10 +3,12 @@ package com.wallet.my.DB;
 import android.content.ContentValues;
 import com.wallet.my.DB.MyWalletDb.ExpenseDB;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.wallet.my.Entity.Expense;
 import com.wallet.my.Entity.InPocket;
+import com.wallet.my.R;
 
 /**
  * Created by Uros on 28-Nov-15.
@@ -51,5 +53,31 @@ public class ExpenseDbHelper extends MyWalletDbHelper{
         {
             return newRowId;
         }
+    }
+
+    public String getExpenseStatistic() {
+
+        String result = "";
+        String query = "SELECT * FROM " + ExpenseDB.TABLE_NAME;
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        while(!cursor.isAfterLast())
+        {
+            if(cursor.getString(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_ID)) != null) {
+                result += cursor.getString(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_AMOUNT));
+                result += " € | ";
+                result += cursor.getString(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_SPENT_ON));
+                result += "\n";
+            }
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+
+        return result;
     }
 }

@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 
 /**
- * Created by Uros i Vesko on 26-Nov-15.
+ * Created by Uros on 26-Nov-15.
  */
 public class Balance {
 
