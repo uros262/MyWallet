@@ -9,32 +9,6 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/twStatisticExpenses"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="90" />
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="10"
-        android:weightSum="100">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:text="@string/incomes"
-            android:id="@+id/btnStatisticIncomes"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="50" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:text="@string/statistic"
-            android:id="@+id/btnStatisticMain"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="50" />
-    </LinearLayout>
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>

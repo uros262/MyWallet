@@ -85,7 +85,7 @@ public class IncomeDbHelper extends MyWalletDbHelper{
 
         result += "========================\n";
         DecimalFormat df = new DecimalFormat("#.00");
-        result += "Total earned: " + df.format(totalSum);
+        result += "Total earned: " + df.format(totalSum) + " €";
 
         cursor.close();
 

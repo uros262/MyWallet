@@ -1,32 +1,20 @@
 package com.wallet.my;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.wallet.my.DB.IncomeDbHelper;
 
-public class StatisticIncomes extends AppCompatActivity implements View.OnClickListener {
+public class StatisticIncomes extends AppCompatActivity {
 
     TextView incomes;
-    Button mainStatistic;
-    Button expenses;
     IncomeDbHelper incomeDbHelper;
 
     private void Init(){
         incomes = (TextView) findViewById(R.id.twStatisticIncomes);
-
-        mainStatistic = (Button) findViewById(R.id.btnStatisticMain);
-        mainStatistic.setOnClickListener(this);
-
-        expenses = (Button) findViewById(R.id.btnStatisticExpenses);
-        expenses.setOnClickListener(this);
-
         incomeDbHelper = new IncomeDbHelper(this);
     }
 
@@ -47,21 +35,6 @@ public class StatisticIncomes extends AppCompatActivity implements View.OnClickL
     protected void onResume() {
         super.onResume();
         this.LoadIncomeStatistic();
-    }
-
-    @Override
-    public void onClick(View view) {
-        Intent intent;
-        switch (view.getId()) {
-            case R.id.btnStatisticMain:
-                intent = new Intent(StatisticIncomes.this, StatisticMain.class);
-                startActivity(intent);
-                break;
-            case R.id.btnStatisticExpenses:
-                intent = new Intent(StatisticIncomes.this, StatisticExpenses.class);
-                startActivity(intent);
-                break;
-        }
     }
 
     @Override

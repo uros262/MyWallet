@@ -82,7 +82,7 @@ public class ExpenseDbHelper extends MyWalletDbHelper{
 
         result += "========================\n";
         DecimalFormat df = new DecimalFormat("#.00");
-        result += "Total spent: " + df.format(totalSum);
+        result += "Total spent: " + df.format(totalSum) + " €";
 
         cursor.close();
 
