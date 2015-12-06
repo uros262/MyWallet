@@ -108,7 +108,7 @@ public class BalanceDbHelper extends MyWalletDbHelper{
         {
             if(cursor.getString(cursor.getColumnIndex(BalanceDB.COLUMN_NAME_ID)) != null) {
                 result += cursor.getString(cursor.getColumnIndex(BalanceDB.COLUMN_NAME_AMOUNT));
-                result += " | ";
+                result += " € | ";
                 result += cursor.getString(cursor.getColumnIndex(BalanceDB.COLUMN_NAME_UPDATE_TIME));
                 result += "\n";
             }

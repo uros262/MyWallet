@@ -12,6 +12,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.wallet.my.Entity.Balance;
 import com.wallet.my.Entity.Income;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by Uros on 26-Nov-15.
  */
@@ -58,6 +60,7 @@ public class IncomeDbHelper extends MyWalletDbHelper{
     public String getIncomesStatistic() {
 
         String result = "";
+        double totalSum = 0.00;
         String query = "SELECT * FROM " + IncomeDB.TABLE_NAME;
 
         SQLiteDatabase db = getReadableDatabase();
@@ -67,6 +70,7 @@ public class IncomeDbHelper extends MyWalletDbHelper{
 
         while (!cursor.isAfterLast()){
             if(cursor.getString(cursor.getColumnIndex(IncomeDB.COLUMN_NAME_ID)) != null){
+                totalSum += cursor.getDouble(cursor.getColumnIndex(IncomeDB.COLUMN_NAME_AMOUNT));
                 result += cursor.getString(cursor.getColumnIndex(IncomeDB.COLUMN_NAME_ID));
                 result += ". ";
                 result += cursor.getString(cursor.getColumnIndex(IncomeDB.COLUMN_NAME_SOURCE));
@@ -78,6 +82,10 @@ public class IncomeDbHelper extends MyWalletDbHelper{
             }
             cursor.moveToNext();
         }
+
+        result += "========================\n";
+        DecimalFormat df = new DecimalFormat("#.00");
+        result += "Total earned: " + df.format(totalSum);
 
         cursor.close();
 

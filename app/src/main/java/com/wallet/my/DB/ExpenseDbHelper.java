@@ -10,6 +10,8 @@ import com.wallet.my.Entity.Expense;
 import com.wallet.my.Entity.InPocket;
 import com.wallet.my.R;
 
+import java.text.DecimalFormat;
+
 /**
  * Created by Uros on 28-Nov-15.
  */
@@ -58,6 +60,7 @@ public class ExpenseDbHelper extends MyWalletDbHelper{
     public String getExpenseStatistic() {
 
         String result = "";
+        double totalSum = 0.00;
         String query = "SELECT * FROM " + ExpenseDB.TABLE_NAME;
 
         SQLiteDatabase db = getReadableDatabase();
@@ -68,6 +71,7 @@ public class ExpenseDbHelper extends MyWalletDbHelper{
         while(!cursor.isAfterLast())
         {
             if(cursor.getString(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_ID)) != null) {
+                totalSum += cursor.getDouble(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_AMOUNT));
                 result += cursor.getString(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_AMOUNT));
                 result += " € | ";
                 result += cursor.getString(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_SPENT_ON));
@@ -75,6 +79,10 @@ public class ExpenseDbHelper extends MyWalletDbHelper{
             }
             cursor.moveToNext();
         }
+
+        result += "========================\n";
+        DecimalFormat df = new DecimalFormat("#.00");
+        result += "Total spent: " + df.format(totalSum);
 
         cursor.close();
 
