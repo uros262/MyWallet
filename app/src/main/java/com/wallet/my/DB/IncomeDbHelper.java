@@ -11,8 +11,12 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.wallet.my.Entity.Balance;
 import com.wallet.my.Entity.Income;
+import com.wallet.my.Helpers.DateHelper;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 /**
  * Created by Uros on 26-Nov-15.
@@ -61,6 +65,8 @@ public class IncomeDbHelper extends MyWalletDbHelper{
 
         String result = "";
         double totalSum = 0.00;
+        DateHelper dateHelper = new DateHelper();
+
         String query = "SELECT * FROM " + IncomeDB.TABLE_NAME;
 
         SQLiteDatabase db = getReadableDatabase();
@@ -76,8 +82,8 @@ public class IncomeDbHelper extends MyWalletDbHelper{
                 result += cursor.getString(cursor.getColumnIndex(IncomeDB.COLUMN_NAME_SOURCE));
                 result += ": ";
                 result += cursor.getString(cursor.getColumnIndex(IncomeDB.COLUMN_NAME_AMOUNT));
-                result += " € at ";
-                result += cursor.getString(cursor.getColumnIndex(IncomeDB.COLUMN_NAME_TIME));
+                result += " € | ";
+                result += dateHelper.getFormatedDate(cursor.getString(cursor.getColumnIndex(IncomeDB.COLUMN_NAME_TIME)));
                 result += ";\n";
             }
             cursor.moveToNext();

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.wallet.my.Entity.Expense;
 import com.wallet.my.Entity.InPocket;
+import com.wallet.my.Helpers.DateHelper;
 import com.wallet.my.R;
 
 import java.text.DecimalFormat;
@@ -61,6 +62,8 @@ public class ExpenseDbHelper extends MyWalletDbHelper{
 
         String result = "";
         double totalSum = 0.00;
+        DateHelper dateHelper = new DateHelper();
+
         String query = "SELECT * FROM " + ExpenseDB.TABLE_NAME;
 
         SQLiteDatabase db = getReadableDatabase();
@@ -75,6 +78,8 @@ public class ExpenseDbHelper extends MyWalletDbHelper{
                 result += cursor.getString(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_AMOUNT));
                 result += " € | ";
                 result += cursor.getString(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_SPENT_ON));
+                result += " | ";
+                result += dateHelper.getFormatedDate(cursor.getString(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_TIME)));
                 result += "\n";
             }
             cursor.moveToNext();

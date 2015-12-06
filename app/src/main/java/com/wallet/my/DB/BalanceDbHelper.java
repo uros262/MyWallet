@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.wallet.my.Entity.Expense;
 import com.wallet.my.Entity.Income;
+import com.wallet.my.Helpers.DateHelper;
 
 import java.text.DecimalFormat;
 
@@ -97,6 +98,8 @@ public class BalanceDbHelper extends MyWalletDbHelper{
     public String getBalanceStatistic() {
 
         String result = "";
+        DateHelper dateHelper = new DateHelper();
+
         String query = "SELECT * FROM " + BalanceDB.TABLE_NAME;
 
         SQLiteDatabase db = getReadableDatabase();
@@ -109,7 +112,7 @@ public class BalanceDbHelper extends MyWalletDbHelper{
             if(cursor.getString(cursor.getColumnIndex(BalanceDB.COLUMN_NAME_ID)) != null) {
                 result += cursor.getString(cursor.getColumnIndex(BalanceDB.COLUMN_NAME_AMOUNT));
                 result += " € | ";
-                result += cursor.getString(cursor.getColumnIndex(BalanceDB.COLUMN_NAME_UPDATE_TIME));
+                result += dateHelper.getFormatedDateTime(cursor.getString(cursor.getColumnIndex(BalanceDB.COLUMN_NAME_UPDATE_TIME)));
                 result += "\n";
             }
             cursor.moveToNext();
