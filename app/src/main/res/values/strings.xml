@@ -29,4 +29,8 @@
     <string name="change">change</string>
     <string name="incomes">Incomes</string>
     <string name="expenses">Expenses</string>
+    <string name="search">Search</string>
+    <string name="day">Day</string>
+    <string name="year">Year</string>
+    <string name="month">Month</string>
 </resources>

@@ -5,9 +5,12 @@ import com.wallet.my.DB.MyWalletDb.ExpenseDB;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.Editable;
+import android.util.Log;
 
 import com.wallet.my.Entity.Expense;
 import com.wallet.my.Entity.InPocket;
+import com.wallet.my.Entity.SearchFilter;
 import com.wallet.my.Helpers.DateHelper;
 import com.wallet.my.R;
 
@@ -68,6 +71,98 @@ public class ExpenseDbHelper extends MyWalletDbHelper{
 
         SQLiteDatabase db = getReadableDatabase();
 
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        while(!cursor.isAfterLast())
+        {
+            if(cursor.getString(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_ID)) != null) {
+                totalSum += cursor.getDouble(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_AMOUNT));
+                result += cursor.getString(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_AMOUNT));
+                result += " € | ";
+                result += cursor.getString(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_SPENT_ON));
+                result += " | ";
+                result += dateHelper.getFormatedDate(cursor.getString(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_TIME)));
+                result += "\n";
+            }
+            cursor.moveToNext();
+        }
+
+        result += "========================\n";
+        DecimalFormat df = new DecimalFormat("#.00");
+        result += "Total spent: " + df.format(totalSum) + " €";
+
+        cursor.close();
+
+        return result;
+    }
+
+    public String getTotalExpenses() {
+
+        String result = "";
+        double totalSum = 0.00;
+
+        String query = "SELECT * FROM " + ExpenseDB.TABLE_NAME;
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        while(!cursor.isAfterLast())
+        {
+            if(cursor.getString(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_ID)) != null) {
+                totalSum += cursor.getDouble(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_AMOUNT));
+            }
+            cursor.moveToNext();
+        }
+
+        DecimalFormat df = new DecimalFormat("#.00");
+        result += "Total spent: " + df.format(totalSum) + " €";
+
+        cursor.close();
+
+        return result;
+    }
+
+    public String searchExpenses(SearchFilter filter) {
+
+        String result = "";
+        double totalSum = 0.00;
+        DateHelper dateHelper = new DateHelper();
+
+        String query = "SELECT * FROM " + ExpenseDB.TABLE_NAME + " WHERE ";
+
+        if(!filter.getWord().equals(""))
+        {
+            query += ExpenseDB.COLUMN_NAME_SPENT_ON + " LIKE \'%" + filter.getWord() + "%\'";
+            if(
+                !filter.getDay().equals("") ||
+                !filter.getMonth().equals("") ||
+                !filter.getYear().equals("")
+                    )query += " AND ";
+        }
+        if(!filter.getDay().equals(""))
+        {
+            query += "strftime('%d', " + ExpenseDB.COLUMN_NAME_TIME + ") = \'" + filter.getDay() + "\'";
+            if(
+                !filter.getMonth().equals("") ||
+                !filter.getYear().equals("")
+                    )query += " AND ";
+        }
+        if(!filter.getMonth().equals(""))
+        {
+            query += "strftime('%m', " + ExpenseDB.COLUMN_NAME_TIME + ") = \'" + filter.getMonth() + "\'";
+            if(
+                !filter.getYear().equals("")
+                    )query += " AND ";
+        }
+        if(!filter.getYear().equals(""))
+        {
+            query += "strftime('%Y', " + ExpenseDB.COLUMN_NAME_TIME + ") = \'" + filter.getYear() + "\'";
+        }
+
+        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
 

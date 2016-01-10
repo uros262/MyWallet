@@ -3,6 +3,7 @@ package com.wallet.my;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
 
     private void Init(){
         balance = (TextView) findViewById(R.id.twStatisticBalance);
+        balance.setMovementMethod(new ScrollingMovementMethod());
 
         incomes = (Button) findViewById(R.id.btnStatisticIncomes);
         incomes.setOnClickListener(this);

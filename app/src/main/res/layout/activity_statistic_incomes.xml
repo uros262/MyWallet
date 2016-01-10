@@ -9,6 +9,8 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/twStatisticIncomes"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:maxLines = "30"
+        android:scrollbars = "vertical"/>
 
 </LinearLayout>

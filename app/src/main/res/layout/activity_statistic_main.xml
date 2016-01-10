@@ -10,7 +10,9 @@
         android:text="New Text"
         android:id="@+id/twStatisticBalance"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="90" />
+        android:layout_weight="90"
+        android:maxLines = "27"
+        android:scrollbars = "vertical"/>
 
     <LinearLayout
         android:orientation="horizontal"
