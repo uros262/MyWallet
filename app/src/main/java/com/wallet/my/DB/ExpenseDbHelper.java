@@ -67,7 +67,8 @@ public class ExpenseDbHelper extends MyWalletDbHelper{
         double totalSum = 0.00;
         DateHelper dateHelper = new DateHelper();
 
-        String query = "SELECT * FROM " + ExpenseDB.TABLE_NAME;
+        String query = "SELECT * FROM " + ExpenseDB.TABLE_NAME
+                + " ORDER BY " + ExpenseDB.COLUMN_NAME_ID + " DESC";
 
         SQLiteDatabase db = getReadableDatabase();
 
