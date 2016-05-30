@@ -6,8 +6,14 @@ import com.wallet.my.DB.MyWalletDb.InPocketDB;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.wallet.my.Entity.Expense;
+import com.wallet.my.Helpers.DateHelper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -88,5 +94,47 @@ public class InPocketDbHelper extends MyWalletDbHelper{
         db.close();
 
         return newRowId;
+    }
+
+    public JSONArray getAllData()
+    {
+        String query = "SELECT  * FROM " + InPocketDB.TABLE_NAME ;
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        DateHelper dateHelper = new DateHelper();
+        JSONArray allData = new JSONArray();
+
+        while (!cursor.isAfterLast()) {
+
+            JSONObject rowObject = new JSONObject();
+
+            if(cursor.getString(cursor.getColumnIndex(InPocketDB.COLUMN_NAME_ID)) != null) {
+                try {
+                    rowObject.put(
+                            cursor.getColumnName(cursor.getColumnIndex(InPocketDB.COLUMN_NAME_ID)),
+                            cursor.getInt(cursor.getColumnIndex(InPocketDB.COLUMN_NAME_ID))
+                        );
+                    rowObject.put(
+                            cursor.getColumnName(cursor.getColumnIndex(InPocketDB.COLUMN_NAME_AMOUNT)),
+                            cursor.getDouble(cursor.getColumnIndex(InPocketDB.COLUMN_NAME_AMOUNT))
+                        );
+                    rowObject.put(
+                            cursor.getColumnName(cursor.getColumnIndex(InPocketDB.COLUMN_NAME_UPDATE_TIME)),
+                            dateHelper.getFormatedDateTime(cursor.getString(cursor.getColumnIndex(InPocketDB.COLUMN_NAME_UPDATE_TIME)))
+                    );
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            allData.put(rowObject);
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        return allData;
     }
 }

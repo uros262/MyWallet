@@ -13,6 +13,10 @@ import com.wallet.my.Entity.Balance;
 import com.wallet.my.Entity.Income;
 import com.wallet.my.Helpers.DateHelper;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -96,5 +100,55 @@ public class IncomeDbHelper extends MyWalletDbHelper{
         cursor.close();
 
         return result;
+    }
+
+    public JSONArray getAllData()
+    {
+        String query = "SELECT  * FROM " + IncomeDB.TABLE_NAME ;
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        DateHelper dateHelper = new DateHelper();
+        JSONArray allData = new JSONArray();
+
+        while (!cursor.isAfterLast()) {
+
+            JSONObject rowObject = new JSONObject();
+
+            if(cursor.getString(cursor.getColumnIndex(IncomeDB.COLUMN_NAME_ID)) != null) {
+                try {
+                    rowObject.put(
+                            cursor.getColumnName(cursor.getColumnIndex(IncomeDB.COLUMN_NAME_ID)),
+                            cursor.getInt(cursor.getColumnIndex(IncomeDB.COLUMN_NAME_ID))
+                    );
+                    rowObject.put(
+                            cursor.getColumnName(cursor.getColumnIndex(IncomeDB.COLUMN_NAME_AMOUNT)),
+                            cursor.getDouble(cursor.getColumnIndex(IncomeDB.COLUMN_NAME_AMOUNT))
+                    );
+                    rowObject.put(
+                            cursor.getColumnName(cursor.getColumnIndex(IncomeDB.COLUMN_NAME_SOURCE)),
+                            cursor.getString(cursor.getColumnIndex(IncomeDB.COLUMN_NAME_SOURCE))
+                    );
+                    rowObject.put(
+                            cursor.getColumnName(cursor.getColumnIndex(IncomeDB.COLUMN_NAME_TYPE)),
+                            cursor.getString(cursor.getColumnIndex(IncomeDB.COLUMN_NAME_TYPE))
+                    );
+                    rowObject.put(
+                            cursor.getColumnName(cursor.getColumnIndex(IncomeDB.COLUMN_NAME_TIME)),
+                            dateHelper.getFormatedDateTime(cursor.getString(cursor.getColumnIndex(IncomeDB.COLUMN_NAME_TIME)))
+                    );
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            allData.put(rowObject);
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        return allData;
     }
 }

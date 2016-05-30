@@ -9,19 +9,39 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.wallet.my.DB.BalanceDbHelper;
+import com.wallet.my.DB.ExpenseDbHelper;
+import com.wallet.my.DB.InPocketDbHelper;
+import com.wallet.my.DB.IncomeDbHelper;
+import com.wallet.my.DB.MyWalletDb;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+
+import cz.msebera.android.httpclient.Header;
 
 public class StatisticMain extends AppCompatActivity implements View.OnClickListener {
 
-    TextView balance;
+    Button backup;
     Button incomes;
     Button expenses;
     BalanceDbHelper balanceDbHelper;
+    InPocketDbHelper inPocketDbHelper;
+    IncomeDbHelper incomeDbHelper;
+    ExpenseDbHelper expenseDbHelper;
 
     private void Init(){
-        balance = (TextView) findViewById(R.id.twStatisticBalance);
-        balance.setMovementMethod(new ScrollingMovementMethod());
+        backup = (Button) findViewById(R.id.btnBackup);
+        backup.setOnClickListener(this);
 
         incomes = (Button) findViewById(R.id.btnStatisticIncomes);
         incomes.setOnClickListener(this);
@@ -30,11 +50,9 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
         expenses.setOnClickListener(this);
 
         balanceDbHelper = new BalanceDbHelper(this);
-    }
-
-    private void LoadMainBalanceStatistic()
-    {
-        balance.setText(balanceDbHelper.getBalanceStatistic());
+        inPocketDbHelper = new InPocketDbHelper(this);
+        incomeDbHelper = new IncomeDbHelper(this);
+        expenseDbHelper = new ExpenseDbHelper(this);
     }
 
     @Override
@@ -42,13 +60,11 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistic_main);
         this.Init();
-        this.LoadMainBalanceStatistic();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        this.LoadMainBalanceStatistic();
     }
 
     @Override
@@ -62,6 +78,43 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
             case R.id.btnStatisticExpenses:
                 intent = new Intent(StatisticMain.this, StatisticExpenses.class);
                 startActivity(intent);
+                break;
+            case R.id.btnBackup:
+                JSONObject allData = new JSONObject();
+
+                JSONArray allBalanceData  = balanceDbHelper.getAllData();
+                JSONArray allInPocketData = inPocketDbHelper.getAllData();
+                JSONArray allIncomeData   = incomeDbHelper.getAllData();
+                JSONArray allExpenseData  = expenseDbHelper.getAllData();
+
+                try {
+                    allData.put(MyWalletDb.BalanceDB.TABLE_NAME, allBalanceData);
+                    allData.put(MyWalletDb.InPocketDB.TABLE_NAME, allInPocketData);
+                    allData.put(MyWalletDb.IncomeDB.TABLE_NAME, allIncomeData);
+                    allData.put(MyWalletDb.ExpenseDB.TABLE_NAME, allExpenseData);
+
+                    //Create AsycHttpClient object
+                    AsyncHttpClient client = new AsyncHttpClient();
+                    RequestParams params = new RequestParams();
+                    params.put("bidon", allData);
+                    client.post("http://192.168.1.67/insertuser.php", params, new AsyncHttpResponseHandler() {
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            Toast.makeText(getApplicationContext(), new String(responseBody), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+                catch(Exception ex)
+                {
+//                    ex.getMessage();
+                }
                 break;
         }
     }

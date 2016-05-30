@@ -14,6 +14,10 @@ import com.wallet.my.Entity.SearchFilter;
 import com.wallet.my.Helpers.DateHelper;
 import com.wallet.my.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DecimalFormat;
 
 /**
@@ -188,5 +192,51 @@ public class ExpenseDbHelper extends MyWalletDbHelper{
         cursor.close();
 
         return result;
+    }
+
+    public JSONArray getAllData()
+    {
+        String query = "SELECT  * FROM " + ExpenseDB.TABLE_NAME ;
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+        cursor.moveToFirst();
+
+        DateHelper dateHelper = new DateHelper();
+        JSONArray allData = new JSONArray();
+
+        while (!cursor.isAfterLast()) {
+
+            JSONObject rowObject = new JSONObject();
+
+            if(cursor.getString(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_ID)) != null) {
+                try {
+                    rowObject.put(
+                            cursor.getColumnName(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_ID)),
+                            cursor.getInt(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_ID))
+                    );
+                    rowObject.put(
+                            cursor.getColumnName(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_AMOUNT)),
+                            cursor.getDouble(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_AMOUNT))
+                    );
+                    rowObject.put(
+                            cursor.getColumnName(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_SPENT_ON)),
+                            cursor.getString(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_SPENT_ON))
+                    );
+                    rowObject.put(
+                            cursor.getColumnName(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_TIME)),
+                            dateHelper.getFormatedDateTime(cursor.getString(cursor.getColumnIndex(ExpenseDB.COLUMN_NAME_TIME)))
+                    );
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            allData.put(rowObject);
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        return allData;
     }
 }

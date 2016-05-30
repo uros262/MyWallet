@@ -4,16 +4,6 @@
     android:layout_height="match_parent"
     android:weightSum="100">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/twStatisticBalance"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="90"
-        android:maxLines = "27"
-        android:scrollbars = "vertical"/>
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -38,5 +28,13 @@
             android:layout_gravity="center_horizontal"
             android:layout_weight="50" />
     </LinearLayout>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/backup"
+        android:id="@+id/btnBackup"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="10" />
 
 </LinearLayout>
