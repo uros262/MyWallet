@@ -239,4 +239,42 @@ public class ExpenseDbHelper extends MyWalletDbHelper{
         cursor.close();
         return allData;
     }
+
+    public void insertBackup(JSONArray backupExpense) throws JSONException {
+
+        // Gets the data repository in write mode
+        SQLiteDatabase db = getWritableDatabase();
+
+        DateHelper dateHelper = new DateHelper();
+
+        for (int i = 0; i < backupExpense.length(); i++) {
+            JSONObject row = backupExpense.getJSONObject(i);
+
+            // Create a new map of values, where column names are the keys
+            ContentValues values = new ContentValues();
+            values.put(
+                    ExpenseDB.COLUMN_NAME_ID,
+                    row.getString(ExpenseDB.COLUMN_NAME_ID)
+            );
+            values.put(
+                    ExpenseDB.COLUMN_NAME_AMOUNT,
+                    row.getString(ExpenseDB.COLUMN_NAME_AMOUNT)
+            );
+            values.put(
+                    ExpenseDB.COLUMN_NAME_TIME,
+                    dateHelper.getTimestampForDatabase(row.getString(ExpenseDB.COLUMN_NAME_TIME))
+            );
+            values.put(
+                    ExpenseDB.COLUMN_NAME_SPENT_ON,
+                    row.getString(ExpenseDB.COLUMN_NAME_SPENT_ON)
+            );
+
+            db.insert(
+                    ExpenseDB.TABLE_NAME,
+                    null,
+                    values);
+        }
+
+        db.close();
+    }
 }

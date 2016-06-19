@@ -168,4 +168,39 @@ public class BalanceDbHelper extends MyWalletDbHelper{
         cursor.close();
         return allData;
     }
+
+    public void insertBackup(JSONArray backupBalance) throws JSONException {
+
+        // Gets the data repository in write mode
+        SQLiteDatabase db = getWritableDatabase();
+
+        DateHelper dateHelper = new DateHelper();
+
+        for(int i = 0; i<backupBalance.length(); i++)
+        {
+            JSONObject row = backupBalance.getJSONObject(i);
+
+            // Create a new map of values, where column names are the keys
+            ContentValues values = new ContentValues();
+            values.put(
+                    BalanceDB.COLUMN_NAME_ID,
+                    row.getString(BalanceDB.COLUMN_NAME_ID)
+            );
+            values.put(
+                    BalanceDB.COLUMN_NAME_AMOUNT,
+                    row.getString(BalanceDB.COLUMN_NAME_AMOUNT)
+            );
+            values.put(
+                    BalanceDB.COLUMN_NAME_UPDATE_TIME,
+                    dateHelper.getTimestampForDatabase(row.getString(BalanceDB.COLUMN_NAME_UPDATE_TIME))
+            );
+
+            db.insert(
+                    BalanceDB.TABLE_NAME,
+                    null,
+                    values);
+        }
+
+        db.close();
+    }
 }

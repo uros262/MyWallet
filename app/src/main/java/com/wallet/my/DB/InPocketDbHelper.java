@@ -137,4 +137,39 @@ public class InPocketDbHelper extends MyWalletDbHelper{
         cursor.close();
         return allData;
     }
+
+    public void insertBackup(JSONArray backupInPocket) throws JSONException {
+
+        // Gets the data repository in write mode
+        SQLiteDatabase db = getWritableDatabase();
+
+        DateHelper dateHelper = new DateHelper();
+
+        for(int i = 0; i<backupInPocket.length(); i++)
+        {
+            JSONObject row = backupInPocket.getJSONObject(i);
+
+            // Create a new map of values, where column names are the keys
+            ContentValues values = new ContentValues();
+            values.put(
+                    InPocketDB.COLUMN_NAME_ID,
+                    row.getString(InPocketDB.COLUMN_NAME_ID)
+            );
+            values.put(
+                    InPocketDB.COLUMN_NAME_AMOUNT,
+                    row.getString(InPocketDB.COLUMN_NAME_AMOUNT)
+            );
+            values.put(
+                    InPocketDB.COLUMN_NAME_UPDATE_TIME,
+                    dateHelper.getTimestampForDatabase(row.getString(InPocketDB.COLUMN_NAME_UPDATE_TIME))
+            );
+
+            db.insert(
+                    InPocketDB.TABLE_NAME,
+                    null,
+                    values);
+        }
+
+        db.close();
+    }
 }

@@ -17,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -150,5 +151,47 @@ public class IncomeDbHelper extends MyWalletDbHelper{
 
         cursor.close();
         return allData;
+    }
+
+    public void insertBackup(JSONArray backupIncome) throws JSONException {
+
+        // Gets the data repository in write mode
+        SQLiteDatabase db = getWritableDatabase();
+
+        DateHelper dateHelper = new DateHelper();
+
+        for (int i = 0; i < backupIncome.length(); i++) {
+            JSONObject row = backupIncome.getJSONObject(i);
+
+            // Create a new map of values, where column names are the keys
+            ContentValues values = new ContentValues();
+            values.put(
+                    IncomeDB.COLUMN_NAME_ID,
+                    row.getString(IncomeDB.COLUMN_NAME_ID)
+            );
+            values.put(
+                    IncomeDB.COLUMN_NAME_AMOUNT,
+                    row.getString(IncomeDB.COLUMN_NAME_AMOUNT)
+            );
+            values.put(
+                    IncomeDB.COLUMN_NAME_TIME,
+                    dateHelper.getTimestampForDatabase(row.getString(IncomeDB.COLUMN_NAME_TIME))
+            );
+            values.put(
+                    IncomeDB.COLUMN_NAME_SOURCE,
+                    row.getString(IncomeDB.COLUMN_NAME_SOURCE)
+            );
+            values.put(
+                    IncomeDB.COLUMN_NAME_TYPE,
+                    row.getString(IncomeDB.COLUMN_NAME_TYPE)
+            );
+
+            db.insert(
+                    IncomeDB.TABLE_NAME,
+                    null,
+                    values);
+        }
+
+        db.close();
     }
 }
