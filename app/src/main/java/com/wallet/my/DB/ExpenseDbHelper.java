@@ -72,7 +72,7 @@ public class ExpenseDbHelper extends MyWalletDbHelper{
         DateHelper dateHelper = new DateHelper();
 
         String query = "SELECT * FROM " + ExpenseDB.TABLE_NAME
-                + " ORDER BY " + ExpenseDB.COLUMN_NAME_ID + " DESC";
+                + " ORDER BY " + ExpenseDB.COLUMN_NAME_ID + " DESC LIMIT 50";
 
         SQLiteDatabase db = getReadableDatabase();
 

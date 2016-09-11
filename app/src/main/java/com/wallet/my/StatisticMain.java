@@ -105,7 +105,7 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
                     AsyncHttpClient client = new AsyncHttpClient();
                     RequestParams params = new RequestParams();
                     params.put("bidon", allData);
-                    client.post("http://192.168.1.65/insertuser.php", params, new AsyncHttpResponseHandler() {
+                    client.post("http://192.168.1.69/insertuser.php", params, new AsyncHttpResponseHandler() {
 
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -132,7 +132,7 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
                     //Create AsycHttpClient object
                     AsyncHttpClient client = new AsyncHttpClient();
                     //http://loopj.com/android-async-http/
-                    client.get("http://192.168.1.65/insertuser.php?giveMeBackup=true", new JsonHttpResponseHandler() {
+                    client.get("http://192.168.1.69/insertuser.php?giveMeBackup=true", new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             // If the response is JSONObject instead of expected JSONArray
