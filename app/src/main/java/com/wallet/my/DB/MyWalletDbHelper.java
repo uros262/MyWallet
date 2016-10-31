@@ -82,6 +82,22 @@ public class MyWalletDbHelper extends SQLiteOpenHelper {
 
     // endregion
 
+    // region Table OnCard
+
+    // Create OnCard table
+    private static final String SQL_CREATE_ON_CARD =
+            "CREATE TABLE " + OnCardDB.TABLE_NAME + " (" +
+                    OnCardDB.COLUMN_NAME_ID + INTEGER_TYPE + " PRIMARY KEY," +
+                    OnCardDB.COLUMN_NAME_AMOUNT + DOUBLE_TYPE + COMMA_SEP +
+                    OnCardDB.COLUMN_NAME_UPDATE_TIME + DATETIME_TYPE +
+                    " );";
+
+    // Delete OnCard table
+    private static final String SQL_DELETE_ON_CARD =
+            "DROP TABLE IF EXISTS " + OnCardDB.TABLE_NAME;
+
+    // endregion
+
     // region Table Category
 
     // Create Category table
@@ -133,7 +149,7 @@ public class MyWalletDbHelper extends SQLiteOpenHelper {
     // endregion
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "MyWallet.db";
 
     public MyWalletDbHelper(Context context) {
@@ -145,6 +161,7 @@ public class MyWalletDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_EXPENSE);
         db.execSQL(SQL_CREATE_BALANCE);
         db.execSQL(SQL_CREATE_IN_POCKET);
+        db.execSQL(SQL_CREATE_ON_CARD);
         db.execSQL(SQL_CREATE_CATEGORY);
         db.execSQL(SQL_CREATE_SPENT_ON);
         db.execSQL(SQL_CREATE_LOAN);
@@ -157,6 +174,7 @@ public class MyWalletDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_EXPENSE);
         db.execSQL(SQL_DELETE_BALANCE);
         db.execSQL(SQL_DELETE_IN_POCKET);
+        db.execSQL(SQL_DELETE_ON_CARD);
         db.execSQL(SQL_DELETE_CATEGORY);
         db.execSQL(SQL_DELETE_SPENT_ON);
         db.execSQL(SQL_DELETE_LOAN);

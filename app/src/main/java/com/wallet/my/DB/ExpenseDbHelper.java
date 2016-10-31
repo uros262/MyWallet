@@ -53,8 +53,15 @@ public class ExpenseDbHelper extends MyWalletDbHelper{
         db.close();
 
         if(newRowId > 0){
-            InPocketDbHelper inPocketDbHelper = new InPocketDbHelper(this.context);
-            inPocketDbHelper.decrementInPocketBalance(expense);
+            if(expense.getPaymentType().equals("cache")){
+                InPocketDbHelper inPocketDbHelper = new InPocketDbHelper(this.context);
+                inPocketDbHelper.decrementInPocketBalance(expense);
+            }
+
+            if(expense.getPaymentType().equals("card")){
+                OnCardDbHelper onCardDbHelper = new OnCardDbHelper(this.context);
+                onCardDbHelper.decrementOnCardBalance(expense);
+            }
 
             BalanceDbHelper balanceDbHelper = new BalanceDbHelper(this.context);
             return balanceDbHelper.decrementBalance(expense);

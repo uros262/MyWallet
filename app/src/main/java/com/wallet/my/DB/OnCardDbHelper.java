@@ -1,7 +1,7 @@
 package com.wallet.my.DB;
 
 import android.content.ContentValues;
-import com.wallet.my.DB.MyWalletDb.InPocketDB;
+import com.wallet.my.DB.MyWalletDb.OnCardDB;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -20,25 +20,25 @@ import java.util.Calendar;
 /**
  * Created by Uros on 28-Nov-15.
  */
-public class InPocketDbHelper extends MyWalletDbHelper{
+public class OnCardDbHelper extends MyWalletDbHelper{
 
-    public InPocketDbHelper(Context context) {
+    public OnCardDbHelper(Context context) {
         super(context);
     }
 
-    public double getInPocketBalance() {
+    public double getOnCardBalance() {
 
         double result = 0.00;
-        String query = "SELECT * FROM " + InPocketDB.TABLE_NAME +
-                " WHERE ID = (SELECT MAX(ID) FROM " + InPocketDB.TABLE_NAME + ")";
+        String query = "SELECT * FROM " + OnCardDB.TABLE_NAME +
+                " WHERE ID = (SELECT MAX(ID) FROM " + OnCardDB.TABLE_NAME + ")";
 
         SQLiteDatabase db = getReadableDatabase();
 
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
 
-        if(!cursor.isAfterLast() && cursor.getString(cursor.getColumnIndex(InPocketDB.COLUMN_NAME_ID)) != null) {
-            result = cursor.getDouble(cursor.getColumnIndex(InPocketDB.COLUMN_NAME_AMOUNT));
+        if(!cursor.isAfterLast() && cursor.getString(cursor.getColumnIndex(OnCardDB.COLUMN_NAME_ID)) != null) {
+            result = cursor.getDouble(cursor.getColumnIndex(OnCardDB.COLUMN_NAME_AMOUNT));
         }
         cursor.close();
 
@@ -47,21 +47,21 @@ public class InPocketDbHelper extends MyWalletDbHelper{
     }
 
     // Add balance
-    public long setInPocketBalance(double income)
+    public long setOnCardBalance(double income)
     {
         // Gets the data repository in write mode
         SQLiteDatabase db = getWritableDatabase();
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
-        values.put(InPocketDB.COLUMN_NAME_AMOUNT, income);
-        values.put(InPocketDB.COLUMN_NAME_UPDATE_TIME, String.valueOf(new java.sql.Timestamp(Calendar.getInstance().getTime().getTime())));
+        values.put(OnCardDB.COLUMN_NAME_AMOUNT, income);
+        values.put(OnCardDB.COLUMN_NAME_UPDATE_TIME, String.valueOf(new java.sql.Timestamp(Calendar.getInstance().getTime().getTime())));
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId;
         newRowId =
                 db.insert(
-                        InPocketDB.TABLE_NAME,
+                        OnCardDB.TABLE_NAME,
                         null,
                         values);
         db.close();
@@ -69,25 +69,25 @@ public class InPocketDbHelper extends MyWalletDbHelper{
         return newRowId;
     }
 
-    public long decrementInPocketBalance(Expense expense) {
+    public long decrementOnCardBalance(Expense expense) {
 
         // Gets the data repository in write mode
         SQLiteDatabase db = getWritableDatabase();
 
         // get latest balance
-        double currentBalance = getInPocketBalance();
+        double currentBalance = getOnCardBalance();
         double newBalance = currentBalance - expense.getAmount();
 
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
-        values.put(InPocketDB.COLUMN_NAME_AMOUNT, newBalance);
-        values.put(InPocketDB.COLUMN_NAME_UPDATE_TIME, String.valueOf(expense.getTime()));
+        values.put(OnCardDB.COLUMN_NAME_AMOUNT, newBalance);
+        values.put(OnCardDB.COLUMN_NAME_UPDATE_TIME, String.valueOf(expense.getTime()));
 
         // Insert the new row, returning the primary key value of the new row
         long newRowId;
         newRowId =
                 db.insert(
-                        InPocketDB.TABLE_NAME,
+                        OnCardDB.TABLE_NAME,
                         null,
                         values);
         db.close();
@@ -97,7 +97,7 @@ public class InPocketDbHelper extends MyWalletDbHelper{
 
     public JSONArray getAllData()
     {
-        String query = "SELECT  * FROM " + InPocketDB.TABLE_NAME ;
+        String query = "SELECT  * FROM " + OnCardDB.TABLE_NAME ;
         SQLiteDatabase db = getReadableDatabase();
 
         Cursor cursor = db.rawQuery(query, null);
@@ -110,19 +110,19 @@ public class InPocketDbHelper extends MyWalletDbHelper{
 
             JSONObject rowObject = new JSONObject();
 
-            if(cursor.getString(cursor.getColumnIndex(InPocketDB.COLUMN_NAME_ID)) != null) {
+            if(cursor.getString(cursor.getColumnIndex(OnCardDB.COLUMN_NAME_ID)) != null) {
                 try {
                     rowObject.put(
-                            cursor.getColumnName(cursor.getColumnIndex(InPocketDB.COLUMN_NAME_ID)),
-                            cursor.getInt(cursor.getColumnIndex(InPocketDB.COLUMN_NAME_ID))
-                        );
+                            cursor.getColumnName(cursor.getColumnIndex(OnCardDB.COLUMN_NAME_ID)),
+                            cursor.getInt(cursor.getColumnIndex(OnCardDB.COLUMN_NAME_ID))
+                    );
                     rowObject.put(
-                            cursor.getColumnName(cursor.getColumnIndex(InPocketDB.COLUMN_NAME_AMOUNT)),
-                            cursor.getDouble(cursor.getColumnIndex(InPocketDB.COLUMN_NAME_AMOUNT))
-                        );
+                            cursor.getColumnName(cursor.getColumnIndex(OnCardDB.COLUMN_NAME_AMOUNT)),
+                            cursor.getDouble(cursor.getColumnIndex(OnCardDB.COLUMN_NAME_AMOUNT))
+                    );
                     rowObject.put(
-                            cursor.getColumnName(cursor.getColumnIndex(InPocketDB.COLUMN_NAME_UPDATE_TIME)),
-                            dateHelper.getFormatedDateTime(cursor.getString(cursor.getColumnIndex(InPocketDB.COLUMN_NAME_UPDATE_TIME)))
+                            cursor.getColumnName(cursor.getColumnIndex(OnCardDB.COLUMN_NAME_UPDATE_TIME)),
+                            dateHelper.getFormatedDateTime(cursor.getString(cursor.getColumnIndex(OnCardDB.COLUMN_NAME_UPDATE_TIME)))
                     );
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -151,20 +151,20 @@ public class InPocketDbHelper extends MyWalletDbHelper{
             // Create a new map of values, where column names are the keys
             ContentValues values = new ContentValues();
             values.put(
-                    InPocketDB.COLUMN_NAME_ID,
-                    row.getString(InPocketDB.COLUMN_NAME_ID)
+                    OnCardDB.COLUMN_NAME_ID,
+                    row.getString(OnCardDB.COLUMN_NAME_ID)
             );
             values.put(
-                    InPocketDB.COLUMN_NAME_AMOUNT,
-                    row.getString(InPocketDB.COLUMN_NAME_AMOUNT)
+                    OnCardDB.COLUMN_NAME_AMOUNT,
+                    row.getString(OnCardDB.COLUMN_NAME_AMOUNT)
             );
             values.put(
-                    InPocketDB.COLUMN_NAME_UPDATE_TIME,
-                    dateHelper.getTimestampForDatabase(row.getString(InPocketDB.COLUMN_NAME_UPDATE_TIME))
+                    OnCardDB.COLUMN_NAME_UPDATE_TIME,
+                    dateHelper.getTimestampForDatabase(row.getString(OnCardDB.COLUMN_NAME_UPDATE_TIME))
             );
 
             db.insert(
-                    InPocketDB.TABLE_NAME,
+                    OnCardDB.TABLE_NAME,
                     null,
                     values);
         }

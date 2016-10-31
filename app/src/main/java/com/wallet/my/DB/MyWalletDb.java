@@ -47,6 +47,14 @@ public final class MyWalletDb {
     }
 
     /* Inner class that defines the table contents */
+    public static abstract class OnCardDB implements BaseColumns {
+        public static final String TABLE_NAME = "OnCard";
+        public static final String COLUMN_NAME_ID = "ID";
+        public static final String COLUMN_NAME_AMOUNT = "Amount";
+        public static final String COLUMN_NAME_UPDATE_TIME = "UpdateTime";
+    }
+
+    /* Inner class that defines the table contents */
     public static abstract class CategoryDB implements BaseColumns {
         public static final String TABLE_NAME = "Category";
         public static final String COLUMN_NAME_ID = "ID";

@@ -7,23 +7,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.wallet.my.DB.ExpenseDbHelper;
 import com.wallet.my.Entity.Expense;
 
-public class AddExpense extends AppCompatActivity implements View.OnClickListener {
+public class AddExpense extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 
-    EditText amount;
     EditText price;
     EditText payFor;
+    RadioGroup type;
+    String paymentType;
     Button addExpense;
     ExpenseDbHelper expenseDbHelper;
 
     private void Init(){
-        amount = (EditText) findViewById(R.id.etExpenseAmount);
         price = (EditText) findViewById(R.id.etExpensePrice);
         payFor = (EditText) findViewById(R.id.etPayFor);
+
+        paymentType = "unknown";
+        type = (RadioGroup) findViewById(R.id.rgPaymentType);
+        type.setOnCheckedChangeListener(this);
 
         addExpense = (Button) findViewById(R.id.btnExpensePay);
         addExpense.setOnClickListener(this);
@@ -47,14 +52,14 @@ public class AddExpense extends AppCompatActivity implements View.OnClickListene
                         getString(R.string.validation_empty), Toast.LENGTH_SHORT).show();
                 return;
             }
-            if(amount.getText().toString().equals("")){
-                Toast.makeText(AddExpense.this, getString(R.string.amount) + " " +
-                        getString(R.string.validation_empty), Toast.LENGTH_SHORT).show();
-                return;
-            }
             if(price.getText().toString().equals("")){
                 Toast.makeText(AddExpense.this, getString(R.string.price) + " " +
                         getString(R.string.validation_empty), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if(paymentType.equals("unknown")){
+                Toast.makeText(AddExpense.this, getString(R.string.payment_type) + " " +
+                        getString(R.string.validation_selected), Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -64,18 +69,10 @@ public class AddExpense extends AppCompatActivity implements View.OnClickListene
             Expense expense = new Expense();
             expense.setTime();
             expense.setSpentOn(payFor.getText().toString());
+            expense.setPaymentType(paymentType);
 
             double cost = 0.00;
-            double tempAmount = Double.parseDouble(amount.getText().toString());
-            double tempPrice = Double.parseDouble(price.getText().toString());
-            if(tempAmount == 0.00)
-            {
-                cost = tempPrice;
-            }
-            else
-            {
-                cost = tempAmount * tempPrice;
-            }
+            cost = Double.parseDouble(price.getText().toString());
             expense.setAmount(cost);
 
             long lastId = expenseDbHelper.addExpense(expense);
@@ -107,5 +104,17 @@ public class AddExpense extends AppCompatActivity implements View.OnClickListene
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        switch (checkedId) {
+            case R.id.rbCache:
+                paymentType = "cache";
+                break;
+            case R.id.rbCard:
+                paymentType = "card";
+                break;
+        }
     }
 }

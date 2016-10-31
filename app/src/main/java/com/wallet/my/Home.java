@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.wallet.my.DB.BalanceDbHelper;
 import com.wallet.my.DB.InPocketDbHelper;
+import com.wallet.my.DB.OnCardDbHelper;
 
 import java.text.DecimalFormat;
 
@@ -25,6 +26,14 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     LinearLayout layoutEditInPocket;
     EditText editInPocket;
     Button btnInPocketChange;
+
+    LinearLayout layoutOnCard;
+    TextView onCard;
+    OnCardDbHelper onCardDbHelper;
+
+    LinearLayout layoutEditOnCard;
+    EditText editOnCard;
+    Button btnOnCardChange;
 
     TextView balance;
     Button incomeBtn;
@@ -43,6 +52,17 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
         editInPocket = (EditText) findViewById(R.id.etInPocket);
         btnInPocketChange = (Button) findViewById(R.id.btnInPocket);
         btnInPocketChange.setOnClickListener(this);
+
+        layoutOnCard = (LinearLayout) findViewById(R.id.llhOnCard);
+        onCard = (TextView) findViewById(R.id.twOnCardAmount);
+        onCardDbHelper = new OnCardDbHelper(this);
+        onCard.setText(String.valueOf(onCardDbHelper.getOnCardBalance()));
+        onCard.setOnClickListener(this);
+
+        layoutEditOnCard = (LinearLayout) findViewById(R.id.llhOnCardChange);
+        editOnCard = (EditText) findViewById(R.id.etOnCard);
+        btnOnCardChange = (Button) findViewById(R.id.btnOnCard);
+        btnOnCardChange.setOnClickListener(this);
 
         balance = (TextView) findViewById(R.id.twBalanceAmount);
         balanceDbHelper = new BalanceDbHelper(this);
@@ -70,6 +90,7 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
         super.onResume();
         balance.setText(String.valueOf(balanceDbHelper.getLatestBalance()));
         inPocket.setText(String.valueOf(inPocketDbHelper.getInPocketBalance()));
+        onCard.setText(String.valueOf(onCardDbHelper.getOnCardBalance()));
     }
 
 
@@ -96,6 +117,26 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
                     inPocketDbHelper.setInPocketBalance(Double.parseDouble(newInPocketValue));
                 }
                 layoutInPocket.setVisibility(View.VISIBLE);
+                break;
+            case R.id.twOnCardAmount:
+                layoutOnCard.setVisibility(View.GONE);
+                editOnCard.setText(onCard.getText());
+                layoutEditOnCard.setVisibility(View.VISIBLE);
+                break;
+            case R.id.btnOnCard:
+                layoutEditOnCard.setVisibility(View.GONE);
+                if(editOnCard.getText().toString().equals(""))
+                {
+                    onCard.setText("0.00");
+                }
+                else
+                {
+                    DecimalFormat df = new DecimalFormat("0.00");
+                    String newOnCardValue = df.format(Double.parseDouble(editOnCard.getText().toString()));
+                    onCard.setText(newOnCardValue);
+                    onCardDbHelper.setOnCardBalance(Double.parseDouble(newOnCardValue));
+                }
+                layoutOnCard.setVisibility(View.VISIBLE);
                 break;
             case R.id.btnIncome:
                 intent = new Intent(Home.this, AddIncome.class);

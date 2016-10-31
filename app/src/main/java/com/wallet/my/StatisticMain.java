@@ -21,6 +21,7 @@ import com.wallet.my.DB.ExpenseDbHelper;
 import com.wallet.my.DB.InPocketDbHelper;
 import com.wallet.my.DB.IncomeDbHelper;
 import com.wallet.my.DB.MyWalletDb;
+import com.wallet.my.DB.OnCardDbHelper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +41,7 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
     Button restoreBackup;
     BalanceDbHelper balanceDbHelper;
     InPocketDbHelper inPocketDbHelper;
+    OnCardDbHelper onCardDbHelper;
     IncomeDbHelper incomeDbHelper;
     ExpenseDbHelper expenseDbHelper;
 
@@ -59,6 +61,7 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
 
         balanceDbHelper = new BalanceDbHelper(this);
         inPocketDbHelper = new InPocketDbHelper(this);
+        onCardDbHelper = new OnCardDbHelper(this);
         incomeDbHelper = new IncomeDbHelper(this);
         expenseDbHelper = new ExpenseDbHelper(this);
     }
@@ -92,12 +95,14 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
 
                 JSONArray allBalanceData  = balanceDbHelper.getAllData();
                 JSONArray allInPocketData = inPocketDbHelper.getAllData();
+                JSONArray allOnCardData   = onCardDbHelper.getAllData();
                 JSONArray allIncomeData   = incomeDbHelper.getAllData();
                 JSONArray allExpenseData  = expenseDbHelper.getAllData();
 
                 try {
                     allData.put(MyWalletDb.BalanceDB.TABLE_NAME, allBalanceData);
                     allData.put(MyWalletDb.InPocketDB.TABLE_NAME, allInPocketData);
+                    allData.put(MyWalletDb.OnCardDB.TABLE_NAME, allOnCardData);
                     allData.put(MyWalletDb.IncomeDB.TABLE_NAME, allIncomeData);
                     allData.put(MyWalletDb.ExpenseDB.TABLE_NAME, allExpenseData);
 
@@ -105,7 +110,7 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
                     AsyncHttpClient client = new AsyncHttpClient();
                     RequestParams params = new RequestParams();
                     params.put("bidon", allData);
-                    client.post("http://192.168.1.69/insertuser.php", params, new AsyncHttpResponseHandler() {
+                    client.post("http://192.168.1.66/insertuser.php", params, new AsyncHttpResponseHandler() {
 
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -132,7 +137,7 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
                     //Create AsycHttpClient object
                     AsyncHttpClient client = new AsyncHttpClient();
                     //http://loopj.com/android-async-http/
-                    client.get("http://192.168.1.69/insertuser.php?giveMeBackup=true", new JsonHttpResponseHandler() {
+                    client.get("http://192.168.1.66/insertuser.php?giveMeBackup=true", new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             // If the response is JSONObject instead of expected JSONArray
@@ -141,11 +146,13 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
                             try {
                                 JSONArray backupBalance = response.getJSONArray(MyWalletDb.BalanceDB.TABLE_NAME);
                                 JSONArray backupInPocket = response.getJSONArray(MyWalletDb.InPocketDB.TABLE_NAME);
+                                JSONArray backupOnCard = response.getJSONArray(MyWalletDb.OnCardDB.TABLE_NAME);
                                 JSONArray backupIncome = response.getJSONArray(MyWalletDb.IncomeDB.TABLE_NAME);
                                 JSONArray backupExpense = response.getJSONArray(MyWalletDb.ExpenseDB.TABLE_NAME);
 
                                 balanceDbHelper.insertBackup(backupBalance);
                                 inPocketDbHelper.insertBackup(backupInPocket);
+                                onCardDbHelper.insertBackup(backupOnCard);
                                 incomeDbHelper.insertBackup(backupIncome);
                                 expenseDbHelper.insertBackup(backupExpense);
 

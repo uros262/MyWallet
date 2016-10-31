@@ -35,4 +35,8 @@
     <string name="month">Month</string>
     <string name="backup">Backup Database</string>
     <string name="restore_backup">Restore Backup</string>
+    <string name="OnCard">On Card</string>
+    <string name="Cache">Cahce</string>
+    <string name="Card">Card</string>
+    <string name="payment_type">Payment type</string>
 </resources>

@@ -13,6 +13,16 @@ public class Expense {
     private Timestamp Time;
     private String SpentOn;
 
+    public String getPaymentType() {
+        return PaymentType;
+    }
+
+    public void setPaymentType(String paymentType) {
+        PaymentType = paymentType;
+    }
+
+    private String PaymentType;
+
     public int getID() {
         return ID;
     }
