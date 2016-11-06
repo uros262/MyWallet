@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_weight="5"
-        android:weightSum="100">
+        android:weightSum="100"
+        android:layout_margin="5dp">
 
         <Button
             android:layout_width="wrap_content"
@@ -18,7 +19,10 @@
             android:text="@string/incomes"
             android:id="@+id/btnStatisticIncomes"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="50" />
+            android:layout_weight="50"
+            android:background="@color/accent_material_light"
+            android:textColor="@color/abc_primary_text_material_dark"
+            android:layout_margin="5dp" />
 
         <Button
             android:layout_width="wrap_content"
@@ -26,32 +30,10 @@
             android:text="@string/expenses"
             android:id="@+id/btnStatisticExpenses"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="50" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="5"
-        android:weightSum="100"
-        android:transitionGroup="false">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/backup"
-            android:id="@+id/btnBackup"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="50" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/restore_backup"
-            android:id="@+id/btnRestoreBackup"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="50" />
+            android:layout_weight="50"
+            android:background="@android:color/holo_red_dark"
+            android:textColor="@color/abc_primary_text_material_dark"
+            android:layout_margin="5dp" />
     </LinearLayout>
 
 </LinearLayout>

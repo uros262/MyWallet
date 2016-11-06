@@ -37,8 +37,6 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
 
     Button incomes;
     Button expenses;
-    Button backup;
-    Button restoreBackup;
     BalanceDbHelper balanceDbHelper;
     InPocketDbHelper inPocketDbHelper;
     OnCardDbHelper onCardDbHelper;
@@ -52,12 +50,6 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
 
         expenses = (Button) findViewById(R.id.btnStatisticExpenses);
         expenses.setOnClickListener(this);
-
-        backup = (Button) findViewById(R.id.btnBackup);
-        backup.setOnClickListener(this);
-
-        restoreBackup = (Button) findViewById(R.id.btnRestoreBackup);
-        restoreBackup.setOnClickListener(this);
 
         balanceDbHelper = new BalanceDbHelper(this);
         inPocketDbHelper = new InPocketDbHelper(this);
@@ -90,7 +82,26 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
                 intent = new Intent(StatisticMain.this, StatisticExpenses.class);
                 startActivity(intent);
                 break;
-            case R.id.btnBackup:
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_home, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        switch (id) {
+            case R.id.mBackupDatabase:
                 JSONObject allData = new JSONObject();
 
                 JSONArray allBalanceData  = balanceDbHelper.getAllData();
@@ -129,8 +140,7 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
 //                    ex.getMessage();
                 }
                 break;
-
-            case R.id.btnRestoreBackup:
+            case R.id.mRestoreDatabase:
 
                 try {
 
@@ -176,27 +186,8 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
                 {
 //                    ex.getMessage();
                 }
+
                 break;
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
         }
 
         return super.onOptionsItemSelected(item);

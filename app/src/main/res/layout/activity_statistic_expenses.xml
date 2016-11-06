@@ -40,7 +40,8 @@
             android:id="@+id/etYear"
             android:layout_weight="30"
             android:gravity="center"
-            android:hint="@string/year" />
+            android:hint="@string/year"
+            android:text="2016" />
     </LinearLayout>
 
     <LinearLayout

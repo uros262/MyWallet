@@ -190,8 +190,8 @@
                 android:text="@string/income"
                 android:id="@+id/btnIncome"
                 android:layout_weight="50"
-                android:background="#a4ff82"
-                android:textColor="#000"
+                android:background="@color/accent_material_light"
+                android:textColor="@color/abc_primary_text_material_dark"
                 android:layout_margin="5dp" />
 
             <Button
@@ -200,8 +200,8 @@
                 android:text="@string/expense"
                 android:id="@+id/btnExpense"
                 android:layout_weight="50"
-                android:textColor="#000"
-                android:background="#ff726f"
+                android:textColor="@color/abc_primary_text_material_dark"
+                android:background="@android:color/holo_red_dark"
                 android:layout_margin="5dp" />
         </LinearLayout>
 
@@ -217,8 +217,8 @@
                 android:text="@string/statistic"
                 android:id="@+id/btnStatistic"
                 android:layout_margin="5dp"
-                android:background="#b7c5ff"
-                android:textColor="#000" />
+                android:background="@android:color/holo_blue_dark"
+                android:textColor="@color/abc_primary_text_material_dark" />
         </LinearLayout>
 
     </LinearLayout>
