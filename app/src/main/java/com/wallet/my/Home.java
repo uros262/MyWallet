@@ -3,15 +3,12 @@ package com.wallet.my;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.wallet.my.DB.BalanceDbHelper;
 import com.wallet.my.DB.InPocketDbHelper;
 import com.wallet.my.DB.OnCardDbHelper;
 
@@ -35,11 +32,9 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     EditText editOnCard;
     Button btnOnCardChange;
 
-    TextView balance;
     Button incomeBtn;
     Button expenseBtn;
     Button statisticBtn;
-    BalanceDbHelper balanceDbHelper;
 
     private void Init() {
         layoutInPocket = (LinearLayout) findViewById(R.id.llhInPocket);
@@ -64,10 +59,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
         btnOnCardChange = (Button) findViewById(R.id.btnOnCard);
         btnOnCardChange.setOnClickListener(this);
 
-        balance = (TextView) findViewById(R.id.twBalanceAmount);
-        balanceDbHelper = new BalanceDbHelper(this);
-        balance.setText(String.valueOf(balanceDbHelper.getLatestBalance()));
-
         incomeBtn = (Button) findViewById(R.id.btnIncome);
         incomeBtn.setOnClickListener(this);
 
@@ -88,7 +79,6 @@ public class Home extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        balance.setText(String.valueOf(balanceDbHelper.getLatestBalance()));
         inPocket.setText(String.valueOf(inPocketDbHelper.getInPocketBalance()));
         onCard.setText(String.valueOf(onCardDbHelper.getOnCardBalance()));
     }

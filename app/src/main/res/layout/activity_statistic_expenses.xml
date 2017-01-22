@@ -41,7 +41,7 @@
             android:layout_weight="30"
             android:gravity="center"
             android:hint="@string/year"
-            android:text="2016" />
+            android:text="2017" />
     </LinearLayout>
 
     <LinearLayout

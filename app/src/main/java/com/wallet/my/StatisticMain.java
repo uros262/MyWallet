@@ -3,8 +3,6 @@ package com.wallet.my;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,16 +25,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.net.URLConnection;
-
 import cz.msebera.android.httpclient.Header;
 
 public class StatisticMain extends AppCompatActivity implements View.OnClickListener {
 
     Button incomes;
     Button expenses;
+    TextView balance;
     BalanceDbHelper balanceDbHelper;
     InPocketDbHelper inPocketDbHelper;
     OnCardDbHelper onCardDbHelper;
@@ -51,7 +46,10 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
         expenses = (Button) findViewById(R.id.btnStatisticExpenses);
         expenses.setOnClickListener(this);
 
+        balance = (TextView) findViewById(R.id.twBalanceAmount);
         balanceDbHelper = new BalanceDbHelper(this);
+        balance.setText(String.valueOf(balanceDbHelper.getLatestBalance()));
+
         inPocketDbHelper = new InPocketDbHelper(this);
         onCardDbHelper = new OnCardDbHelper(this);
         incomeDbHelper = new IncomeDbHelper(this);
@@ -68,6 +66,7 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onResume() {
         super.onResume();
+        balance.setText(String.valueOf(balanceDbHelper.getLatestBalance()));
     }
 
     @Override
@@ -121,7 +120,7 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
                     AsyncHttpClient client = new AsyncHttpClient();
                     RequestParams params = new RequestParams();
                     params.put("bidon", allData);
-                    client.post("http://192.168.1.66/insertuser.php", params, new AsyncHttpResponseHandler() {
+                    client.post("http://192.168.1.67/insertuser.php", params, new AsyncHttpResponseHandler() {
 
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -147,7 +146,7 @@ public class StatisticMain extends AppCompatActivity implements View.OnClickList
                     //Create AsycHttpClient object
                     AsyncHttpClient client = new AsyncHttpClient();
                     //http://loopj.com/android-async-http/
-                    client.get("http://192.168.1.66/insertuser.php?giveMeBackup=true", new JsonHttpResponseHandler() {
+                    client.get("http://192.168.1.67/insertuser.php?giveMeBackup=true", new JsonHttpResponseHandler() {
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                             // If the response is JSONObject instead of expected JSONArray

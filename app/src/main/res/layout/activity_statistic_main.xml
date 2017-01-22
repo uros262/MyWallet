@@ -36,4 +36,39 @@
             android:layout_margin="5dp" />
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/balance"
+        android:id="@+id/textView5"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.04" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.31"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/default_amount"
+            android:id="@+id/twBalanceAmount"
+            android:layout_gravity="center_horizontal"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/euro_sign"
+            android:id="@+id/textView9"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
 </LinearLayout>
